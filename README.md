@@ -48,4 +48,4 @@ Hero info compiled from official MLBB patch notes, [mlcounter.com](https://mlcou
 
 ## License
 
-MIT
+BSD 2-Clause

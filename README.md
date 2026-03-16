@@ -1,50 +1,51 @@
-# MLBB Fighters Encyclopedia
+# MLBB Fighter Encyclopedia
 
-## Overview
-MLBB Fighters Encyclopedia is a web-based information platform that provides detailed knowledge about Fighter heroes in Mobile Legends: Bang Bang. The website is designed to help players understand Fighter roles, explore hero characteristics, and make better strategic decisions during gameplay.
-
-This platform acts as a quick reference for players who want to learn about Fighter heroes, compare their abilities, and identify the best heroes to use in different match situations.
-
-## Purpose
-The main purpose of this website is to provide an organized and easy-to-search encyclopedia of MLBB Fighter heroes. Players can use the platform to:
-
-- Search for specific Fighter heroes
-- Learn about hero skills and abilities
-- Understand strengths and weaknesses of each Fighter
-- Discover recommended builds and gameplay strategies
-- Find Fighters that can counter enemy heroes
-- Compare different Fighters based on their roles and playstyles
-
-By using this information, players can improve their gameplay and choose the most effective Fighter during matches.
+A comprehensive web reference for **Mobile Legends: Bang Bang** Fighter heroes — built with vanilla HTML, CSS, and JavaScript. No frameworks, no build tools, just open `index.html`.
 
 ## Features
-- **Hero Encyclopedia** – A collection of Fighter heroes with detailed descriptions.
-- **Hero Search** – Quickly find Fighters by name.
-- **Hero Information** – Includes skills, roles, strengths, and weaknesses.
-- **Strategy Guide** – Basic tips on how to use each Fighter effectively.
-- **Counter Reference** – Helps players identify Fighters that can counter certain enemy heroes.
 
-## Target Users
-This website is intended for:
-- New players who want to learn about Fighter heroes
-- Intermediate players looking for better hero strategies
-- Experienced players who want quick references during matches
+- **Encyclopedia** — All 32 Fighter heroes with tier ratings, portraits, strengths, weaknesses, builds, and counters
+- **Counter Picker** — Input 2–5 enemy heroes and get ranked Fighter recommendations based on their composition
+- **Draft Mode** — First Pick (safe/versatile) vs Second Pick (direct counter) recommendation logic
+- **ML Rating System** — Community ▲/▼ voting that adjusts recommendation scores over time and persists across sessions
 
-## Technology
-The website may be developed using common web technologies such as:
+## Project Structure
 
-- HTML
-- CSS
-- JavaScript
+```
+index.html          # Entry point — pure HTML markup, no inline CSS or JS
+src/
+├── css/
+│   └── styles.css  # All styling — layout, cards, modal, counter picker, rating widget
+└── js/
+    ├── rating.js   # ML feedback engine — persistent vote weights via window.storage
+    ├── data.js     # Hero data — HEROES, ALL_HEROES, FIGHTER_DATA, ENEMY_TRAITS
+    └── app.js      # App logic — filtering, rendering, modal, counter scoring, picker UI
+```
 
-Additional frameworks or libraries may be used to improve performance and user experience.
+## Usage
 
-## How to Use
-1. Open the website.
-2. Browse the list of available Fighter heroes.
-3. Use the search feature to find a specific Fighter.
-4. Read the hero information, abilities, and strategy tips.
-5. Use the information to decide which Fighter to use or how to counter enemies in your match.
+Clone the repo and open `index.html` directly in a browser — no server required.
 
-## Goal
-The goal of the MLBB Fighters Encyclopedia is to make Fighter-related information more accessible, helping players improve their knowledge and gameplay in Mobile Legends: Bang Bang.
+```bash
+git clone https://github.com/your-username/mlbb-fighter-encyclopedia.git
+cd mlbb-fighter-encyclopedia
+open index.html   # or double-click it
+```
+
+To host on GitHub Pages, just push to a repo and enable Pages from the `main` branch root.
+
+## Script Load Order
+
+The scripts must be loaded in this order (already set in `index.html`):
+
+1. `rating.js` — defines `applyWeight`, `getWeight`, `castVote`, etc.
+2. `data.js`   — defines `HEROES`, `ALL_HEROES`, `FIGHTER_DATA`, `ENEMY_TRAITS`
+3. `app.js`    — consumes all of the above
+
+## Data Sources
+
+Hero info compiled from official MLBB patch notes, [mlcounter.com](https://mlcounter.com), and community tier lists. Hero portraits served from mlcounter.com. Not affiliated with MOONTON Games.
+
+## License
+
+MIT

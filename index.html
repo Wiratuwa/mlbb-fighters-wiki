@@ -1,176 +1,243 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>MLBB Fighter Encyclopedia — Land of Dawn</title>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cinzel:wght@400;600;700&family=Crimson+Pro:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,300;0,400;0,600;0,700;0,800;0,900;1,400&family=Barlow:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"/>
 <link rel="stylesheet" href="styles.css"/>
-<!-- Vercel Web Analytics -->
-<script>
-  window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
-</script>
-<script defer src="/_vercel/insights/script.js"></script>
-<!-- Vercel Speed Insights -->
-<script>
-  window.si = window.si || function () { (window.siq = window.siq || []).push(arguments); };
-</script>
-<script defer src="/_vercel/speed-insights/script.js"></script>
 </head>
+
 <body>
 
-<header>
-  <div class="header-eyebrow">Mobile Legends: Bang Bang · Land of Dawn</div>
-  <h1>Fighter Encyclopedia</h1>
-  <p class="header-sub">Complete guide to all Fighter heroes — strengths, weaknesses &amp; builds</p>
-  <div class="header-meta">
-    <div class="meta-badge"><span>32</span> FIGHTERS</div>
-    <div class="meta-badge">Updated <span>2026</span></div>
-    <div class="meta-badge">Patch <span>Latest</span></div>
+<!-- ── HEADER ── -->
+<header class="site-header">
+  <div class="header-accent-line"></div>
+  <div class="container">
+    <div class="header-eyebrow">Mobile Legends: Bang Bang · Land of Dawn</div>
+    <h1 class="site-title">Fighter Encyclopedia</h1>
+    <p class="site-tagline">Complete guide to all Fighter heroes — strengths, weaknesses &amp; builds</p>
+    <div class="header-badges">
+      <span class="hbadge"><strong>32</strong> Fighters</span>
+      <span class="hbadge">Updated <strong>2026</strong></span>
+      <span class="hbadge">Patch <strong>Latest</strong></span>
+    </div>
   </div>
+  <button id="themeToggle" class="theme-toggle-btn" onclick="toggleTheme()" aria-label="Toggle theme">
+    <span class="icon-dark">🌙</span>
+    <span class="icon-light">☀️</span>
+  </button>
 </header>
 
-<nav class="tab-nav">
-  <button class="tab-btn active" data-tab="encyclopedia" onclick="switchTab('encyclopedia')">⚔ Encyclopedia</button>
-  <button class="tab-btn" data-tab="counter" onclick="switchTab('counter')">🗡 Counter Picker</button>
+<!-- ── TAB NAV ── -->
+<nav class="tab-nav" id="mainNav">
+  <div class="container">
+    <button class="nav-tab active" data-tab="encyclopedia" onclick="switchTab('encyclopedia')">
+      ⚔ Encyclopedia
+    </button>
+    <button class="nav-tab" data-tab="counter" onclick="switchTab('counter')">
+      🗡 Counter Picker
+    </button>
+  </div>
 </nav>
 
-<div id="pane-encyclopedia" class="tab-pane active">
-<div class="controls">
-  <div class="search-box">
-    <span class="search-icon">⚔</span>
-    <input type="text" id="search" placeholder="Search hero…" oninput="applyFilters()"/>
+<!-- ═══════ PANE: ENCYCLOPEDIA ═══════ -->
+<div id="pane-encyclopedia" class="tab-pane">
+
+  <!-- Controls -->
+  <div class="controls-bar" id="controlsBar">
+    <div class="container">
+      <div class="controls-row">
+        <div class="search-wrap">
+          <span class="search-icon-symbol">⚔</span>
+          <input type="text" id="search" class="search-input"
+            placeholder="Search hero, spec, or role…" oninput="applyFilters()"/>
+        </div>
+        <div class="filter-strip">
+          <span class="filter-label">TIER</span>
+          <button class="fpill active" data-tier="all"    onclick="setTier('all',this)">All</button>
+          <button class="fpill"        data-tier="S"      onclick="setTier('S',this)">S</button>
+          <button class="fpill"        data-tier="A"      onclick="setTier('A',this)">A</button>
+          <button class="fpill"        data-tier="B"      onclick="setTier('B',this)">B</button>
+          <button class="fpill"        data-tier="C"      onclick="setTier('C',this)">C</button>
+          <span class="filter-sep"></span>
+          <span class="filter-label">LANE</span>
+          <button class="fpill active" data-lane="all"    onclick="setLane('all',this)">All</button>
+          <button class="fpill"        data-lane="exp"    onclick="setLane('exp',this)">EXP</button>
+          <button class="fpill"        data-lane="jungle" onclick="setLane('jungle',this)">Jungle</button>
+          <span class="filter-sep"></span>
+          <select id="sortBy" class="sort-select" onchange="applyFilters()">
+            <option value="tier">↕ Tier</option>
+            <option value="alpha">↕ A–Z</option>
+          </select>
+        </div>
+      </div>
+    </div>
   </div>
-  <div class="filter-row">
-    <span class="filter-label">Tier</span>
-    <button class="pill active" data-tier="all" onclick="setTier('all',this)">All</button>
-    <button class="pill" data-tier="S" onclick="setTier('S',this)">S</button>
-    <button class="pill" data-tier="A" onclick="setTier('A',this)">A</button>
-    <button class="pill" data-tier="B" onclick="setTier('B',this)">B</button>
-    <button class="pill" data-tier="C" onclick="setTier('C',this)">C</button>
+
+  <div class="container">
+    <div class="results-line">
+      Showing <span id="heroCount" class="results-count">0</span> heroes
+    </div>
+    <div id="heroOutput"></div>
+    <div id="emptyState" class="empty-state d-none">No heroes found in the Land of Dawn.</div>
   </div>
-  <div class="filter-row">
-    <span class="filter-label">Lane</span>
-    <button class="pill active" data-lane="all" onclick="setLane('all',this)">All</button>
-    <button class="pill" data-lane="exp" onclick="setLane('exp',this)">EXP</button>
-    <button class="pill" data-lane="jungle" onclick="setLane('jungle',this)">Jungle</button>
-  </div>
-  <select class="sort-select" id="sortBy" onchange="applyFilters()">
-    <option value="tier">Sort: Tier</option>
-    <option value="alpha">Sort: A–Z</option>
-  </select>
+
 </div>
 
-<main>
-  <div class="results-line">Showing <span id="heroCount">31</span> heroes — click any card for full details</div>
-  <div id="heroOutput"></div>
-  <div class="empty-state" id="emptyState">No heroes found in the Land of Dawn.</div>
-</main>
+<!-- ═══════ PANE: COUNTER PICKER ═══════ -->
+<div id="pane-counter" class="tab-pane d-none">
+  <div class="container py-4 pb-5">
 
-<!-- MODAL -->
-<div class="modal-backdrop" id="modalBackdrop" onclick="handleBackdropClick(event)">
-  <div class="modal" id="modal" role="dialog" aria-modal="true">
-    <div class="modal-stripe" id="modalStripe"></div>
-    <div class="modal-banner">
-      <div class="modal-img" id="modalImg"></div>
-      <div class="modal-info">
+    <div class="cp-intro">
+      <h2 class="cp-title">Counter Picker</h2>
+      <p class="cp-subtitle">Input the enemy heroes you know, and we'll recommend the best Fighter to counter their composition.</p>
+    </div>
+
+    <!-- Step 1 -->
+    <div class="cp-step">
+      <div class="cp-step-hd">
+        <span class="cp-num">1</span>
+        <span class="cp-label">Draft Scenario</span>
+      </div>
+      <div class="row g-2">
+        <div class="col-12 col-sm-6">
+          <button class="draft-btn active" data-mode="first" onclick="setDraftMode('first',this)">
+            <span class="draft-emoji">🏹</span>
+            <div>
+              <div class="draft-name">First Pick</div>
+              <div class="draft-desc">Pick before enemies reveal all heroes</div>
+            </div>
+          </button>
+        </div>
+        <div class="col-12 col-sm-6">
+          <button class="draft-btn" data-mode="second" onclick="setDraftMode('second',this)">
+            <span class="draft-emoji">🗡️</span>
+            <div>
+              <div class="draft-name">Second Pick</div>
+              <div class="draft-desc">Pick after seeing enemy heroes</div>
+            </div>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 2 -->
+    <div class="cp-step">
+      <div class="cp-step-hd">
+        <span class="cp-num">2</span>
+        <span class="cp-label">Select Enemy Heroes <span class="cp-note">(2–5 heroes)</span></span>
+      </div>
+      <div id="enemySlots" class="enemy-slots"></div>
+      <div id="enemyCountLabel" class="enemy-count">
+        <span class="ec-num">0</span> / 5 enemy heroes selected — add at least 2
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="cp-actions">
+      <button class="btn-reset" onclick="resetCounter()">↺ Reset</button>
+      <button id="analyseBtn" class="btn-analyse" onclick="analyseCounter()" disabled>
+        Find Counter Picks →
+      </button>
+    </div>
+
+    <div id="cpResults"></div>
+  </div>
+</div>
+
+<!-- ═══════ MODAL (HERO DETAIL) ═══════ -->
+<div class="modal-backdrop-custom" id="modalBackdrop" onclick="handleBackdropClick(event)">
+  <div class="modal-sheet" id="modal" role="dialog" aria-modal="true">
+    <div class="drag-handle-bar"></div>
+    <div class="modal-accent-line" id="modalStripe"></div>
+
+    <div class="modal-hero-banner">
+      <div class="modal-portrait" id="modalImg"></div>
+      <div class="modal-hero-info">
         <div class="modal-hero-name" id="modalName"></div>
         <div class="modal-hero-title" id="modalHeroTitle"></div>
-        <div class="modal-tags" id="modalTags"></div>
+        <div class="modal-hero-tags" id="modalTags"></div>
       </div>
-      <button class="modal-close" onclick="closeModal()" aria-label="Close">&#x2715;</button>
+      <button class="modal-close" onclick="closeModal()">✕</button>
     </div>
-    <div class="modal-body">
-      <div class="modal-overview" id="modalOverview"></div>
-      <div class="modal-2col">
-        <div class="modal-section">
-          <div class="modal-label">Strengths</div>
-          <ul class="strength-list" id="modalStrengths"></ul>
+
+    <div class="modal-content-scroll" id="modalBodyScroll">
+      <p class="modal-overview-text" id="modalOverview"></p>
+      <div class="modal-spec-badge" id="modalSpecRow"></div>
+
+      <div class="row g-3 mb-3">
+        <div class="col-12 col-md-6">
+          <div class="modal-section-title green-title">▸ Strengths</div>
+          <ul class="stat-list strengths-list" id="modalStrengths"></ul>
         </div>
-        <div class="modal-section">
-          <div class="modal-label">Weaknesses</div>
-          <ul class="weakness-list" id="modalWeaknesses"></ul>
+        <div class="col-12 col-md-6">
+          <div class="modal-section-title red-title">▸ Weaknesses</div>
+          <ul class="stat-list weaknesses-list" id="modalWeaknesses"></ul>
         </div>
       </div>
-      <div class="modal-section">
-        <div class="modal-label">Recommended Build</div>
-        <div class="build-items" id="modalBuild"></div>
+
+      <div class="mb-3">
+        <div class="modal-section-title gold-title">⚙ Recommended Build</div>
+        <div class="build-items-grid" id="modalBuild"></div>
       </div>
-      <div class="modal-section">
-        <div class="modal-label">Notable Counters</div>
-        <div class="counter-items" id="modalCounters"></div>
+
+      <div class="mb-3">
+        <div class="modal-section-title red-title">⚠ Notable Counters</div>
+        <div class="counter-items-grid" id="modalCounters"></div>
       </div>
-      <div class="modal-released" id="modalReleased"></div>
+
+      <div class="modal-release-info" id="modalReleased"></div>
     </div>
   </div>
 </div>
 
-</div><!-- /pane-encyclopedia -->
+<!-- ═══════ HERO PICKER ═══════ -->
+<div class="picker-overlay" id="heroPickerBackdrop" onclick="handlePickerBackdrop(event)">
+  <div class="picker-panel">
+    <div class="drag-handle-bar"></div>
 
-
-<div id="pane-counter" class="tab-pane">
-<div class="cp-wrap">
-  <div class="cp-intro">
-    <h2>Counter Picker</h2>
-    <p>Input the enemy heroes you know, and we'll recommend the best Fighter to counter their composition.</p>
-  </div>
-
-  <!-- Draft Mode -->
-  <div class="cp-step">
-    <div class="cp-step-label"><div class="cp-step-num">1</div> Draft Scenario</div>
-    <div class="draft-toggle">
-      <button class="draft-btn active" data-mode="first" onclick="setDraftMode('first')">
-        First Pick
-        <span class="draft-desc">You pick before enemies reveal all heroes</span>
-      </button>
-      <button class="draft-btn" data-mode="second" onclick="setDraftMode('second')">
-        Second Pick
-        <span class="draft-desc">You pick after seeing enemy heroes</span>
-      </button>
+    <!-- Sticky header: search + roles -->
+    <div class="picker-sticky-header">
+      <div class="picker-top">
+        <div class="picker-search-wrap">
+          <span class="picker-search-icon">🔍</span>
+          <input type="text" id="pickerSearch" class="picker-input"
+            placeholder="Search hero…" oninput="pickerSearch=this.value;renderPickerGrid()"/>
+        </div>
+        <div class="picker-count-badge" id="pickerCountBadge"><span>0</span> shown</div>
+        <button class="picker-close" onclick="closePicker()">✕</button>
+      </div>
+      <div class="picker-roles-row" id="pickerRoles">
+        <button class="role-chip active" data-role="All"      onclick="setPickerRole('All',this)">All</button>
+        <button class="role-chip"        data-role="Tank"     onclick="setPickerRole('Tank',this)">Tank</button>
+        <button class="role-chip"        data-role="Fighter"  onclick="setPickerRole('Fighter',this)">Fighter</button>
+        <button class="role-chip"        data-role="Assassin" onclick="setPickerRole('Assassin',this)">Assassin</button>
+        <button class="role-chip"        data-role="Mage"     onclick="setPickerRole('Mage',this)">Mage</button>
+        <button class="role-chip"        data-role="Marksman" onclick="setPickerRole('Marksman',this)">Marksman</button>
+        <button class="role-chip"        data-role="Support"  onclick="setPickerRole('Support',this)">Support</button>
+      </div>
     </div>
-  </div>
 
-  <!-- Enemy Selection -->
-  <div class="cp-step">
-    <div class="cp-step-label"><div class="cp-step-num">2</div> Select Enemy Heroes <span style="font-family:'Crimson Pro';font-style:italic;font-size:12px;letter-spacing:0;color:var(--text-muted);margin-left:8px">(2 – 5 heroes)</span></div>
-    <div class="enemy-slots" id="enemySlots"></div>
-  </div>
-
-  <!-- Analyse -->
-  <div class="analyse-row">
-    <div class="enemy-count-info" id="enemyCountLabel"><span>0</span> / 5 enemy heroes selected — add at least 2</div>
-    <div style="display:flex;gap:10px">
-      <button class="reset-btn" onclick="resetCounter()">Reset</button>
-      <button class="analyse-btn" id="analyseBtn" onclick="analyseCounter()" disabled>Find Counter Picks →</button>
+    <!-- Results count -->
+    <div class="picker-results-row" id="pickerResultsRow">
+      Showing <span id="pickerResultCount">0</span> heroes
     </div>
-  </div>
 
-  <!-- Results -->
-  <div id="cpResults"></div>
-</div>
-</div><!-- /pane-counter -->
-
-<footer>© 2026 — MLBB Fighter Encyclopedia &nbsp;·&nbsp; Not affiliated with MOONTON Games</footer>
-<!-- HERO PICKER -->
-<div class="hero-picker-backdrop" id="heroPickerBackdrop" onclick="handlePickerBackdrop(event)">
-  <div class="hero-picker">
-    <div class="hero-picker-header">
-      <input type="text" id="pickerSearch" placeholder="Search hero…" oninput="pickerSearch=this.value;renderPickerGrid()"/>
-      <button class="hero-picker-close" onclick="closePicker()">✕</button>
-    </div>
-    <div class="hero-picker-roles" id="pickerRoles">
-      <button class="role-chip active" data-role="All" onclick="setPickerRole('All',this)">All</button>
-      <button class="role-chip" data-role="Tank" onclick="setPickerRole('Tank',this)">Tank</button>
-      <button class="role-chip" data-role="Fighter" onclick="setPickerRole('Fighter',this)">Fighter</button>
-      <button class="role-chip" data-role="Assassin" onclick="setPickerRole('Assassin',this)">Assassin</button>
-      <button class="role-chip" data-role="Mage" onclick="setPickerRole('Mage',this)">Mage</button>
-      <button class="role-chip" data-role="Marksman" onclick="setPickerRole('Marksman',this)">Marksman</button>
-      <button class="role-chip" data-role="Support" onclick="setPickerRole('Support',this)">Support</button>
-    </div>
-    <div class="hero-picker-grid" id="pickerGrid"></div>
+    <!-- Scrollable grid -->
+    <div id="pickerGrid" class="picker-hero-grid"></div>
   </div>
 </div>
 
+<!-- ═══════ FOOTER ═══════ -->
+<footer class="site-footer">
+  <div class="container">
+    © 2026 — MLBB Fighter Encyclopedia · Not affiliated with MOONTON Games
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="rating.js"></script>
 <script src="data.js"></script>
 <script src="app.js"></script>

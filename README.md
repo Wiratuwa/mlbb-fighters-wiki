@@ -34,27 +34,30 @@ The application combines an interactive hero encyclopedia with a counter recomme
 - **Inline CSS styling (custom UI system)**
 
 ## Project Structure
-src/
-│── App.jsx # Main app container and tab switching
-│── main.jsx # Entry point
-│
-├── components/
-│ ├── EncyclopediaTab.jsx # Hero encyclopedia UI
-│ ├── CounterTab.jsx # Counter recommendation system
-│ ├── HeroCard.jsx # Hero card with hover effects
-│ ├── HeroModal.jsx # Hero detail modal
-│ ├── HeroPickerModal.jsx # Enemy hero selection modal
-│ └── ui/
-│ ├── HeroAvatar.jsx
-│ ├── RolePill.jsx
-│ └── TierBadge.jsx
-│
-├── data/
-│ └── heroes.js # Hero dataset
-│
-├── utils/
-│ ├── counter.js # Counter scoring algorithm
-│ └── helpers.js # Colors and helper functions
+```
+├── index.html
+├── package.json
+├── package-lock.json
+├── vite.config.js
+└── src/
+    ├── App.jsx
+    ├── main.jsx
+    ├── components/
+    │   ├── EncyclopediaTab.jsx
+    │   ├── CounterTab.jsx
+    │   ├── HeroCard.jsx
+    │   ├── HeroModal.jsx
+    │   ├── HeroPickerModal.jsx
+    │   └── ui/
+    │       ├── HeroAvatar.jsx
+    │       ├── RolePill.jsx
+    │       └── TierBadge.jsx
+    ├── data/
+    │   └── heroes.js
+    └── utils/
+        ├── counter.js
+        └── helpers.js
+```
 
 ## Core Logic
 The counter system evaluates heroes using a scoring algorithm based on:
